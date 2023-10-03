@@ -2,6 +2,8 @@ import {React, useEffect, useState} from 'react'
 import { MatchDetailCard } from '../components/MatchDetailCard';
 import { MatchSmallCard } from '../components/MatchSmallCard';
 import { useParams } from 'react-router-dom';
+import './MatchPage.scss'
+import { YearSelector } from '../components/YearSelector';
 
 export const MatchPage = () => {
 
@@ -20,23 +22,26 @@ export const MatchPage = () => {
  
         fetchMatches();
     } , 
-    []  //Reason for empty array is first param (fetchMatches) initializes only first time and when the code changes not every time (calls spring api)
+    [teamName,year]  //Reason for empty array is first param (fetchMatches) initializes only first time and when the code changes not every time (calls spring api)
                 //update = we passed teamName ..first param initializes only first time and when teamName changes also (calls spring api)
+                //if we dont put this then it will be infinite loop
     
   );
 
   
 
   return (
-    <div className="MatchPage">
-      <h1>Match Page</h1>     
-
-      {/* <MatchDetailCard teamName = {teamName} match = {matches[0]}/> */}
-      <h2></h2>
-      {
-          matches.map(match => <MatchDetailCard teamName = {teamName} match = {match} />)
-      } 
-      
+    <div className="MatchPage"> 
+      <div className="year-selector">
+        <h3>Select Year</h3>
+          <YearSelector teamName = {teamName}/> 
+      </div>
+      <div>
+          <h1 className="page-heading">{teamName} matches in year {year}</h1>
+          {
+              matches.map(match => <MatchDetailCard teamName = {teamName} match = {match} />)
+          } 
+      </div>
     </div>
   );
 }
